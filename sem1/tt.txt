@@ -1,0 +1,2 @@
+{ "data": { "temperature": 28.4, "humidity": 19.3, "pressure": 1001 }, "status": { "devEUI" : "807B85902000025D", "rssi": -40, "temperature": 30, "battery": 3350, "date": "2017-09-28T14:32:35.15203Z" }}
+{ "data": { "temperature": 28.4, "humidity": 20, "pressure" :1000f, "pressure2" :1000 }, "status": { "devEUI" : "807B85902000025D", "rssi": -40, "temperature": 30, "battery": 3350, "date": "2017-09-28T14:32:35.15203Z" }}
