@@ -12,8 +12,17 @@ def on_connect(client, userdata, flags, rc):
 
     # reconnect then subscriptions will be renewed.
 
-    #client.subscribe("devices/lora/#")
-
+    client.subscribe("devices/lora/#")
+    cho = str(input())
+    if cho not in colors.keys():
+        print("Input not recognized\nTry red, green, blue\n")
+    for color in colors.keys():
+        if cho == color:
+            info = client.publish("devices/lora/807B85902000025D/gpio", colors[color][0])
+            print(info)
+        else:
+            info = client.publish("devices/lora/807B85902000025D/gpio", colors[color][1])
+            print(info)
 
 
 
@@ -41,16 +50,4 @@ client.connect("192.168.4.254")
 
 # manual interface.
 
-client.loop_start()
-while (1):
-    cho = str(input())
-    if cho not in colors.keys():
-        print("Input not recognized\nTry red, green, blue\n")
-        continue
-    for color in colors.keys():
-        if cho == color:
-            info = client.publish("devices/lora/807B85902000025D/gpio", colors[color][0], qos=0)
-            print(info)
-        else:
-            info = client.publish("devices/lora/807B85902000025D/gpio", colors[color][1], qos=0)
-            print(info)
+client.loop_forever()
