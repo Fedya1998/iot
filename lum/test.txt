@@ -1,0 +1,1 @@
+{ "data": { "id": "E4000001E70E6401" }, "status": { "devEUI" : "807B85902000025D", "rssi": -31, "temperature": 30, "battery": 3300, "date": "2017-10-31T16:40:45.615285Z" }}
