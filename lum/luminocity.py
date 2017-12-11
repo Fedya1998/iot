@@ -5,8 +5,10 @@ import threading
 import time
 import math
 
-TOPIC = "devices/lora/807B85902000025D/opt3001"
-TOPIC_TO_WRITE = "devices/lora/807B85902000025D/pwd"
+TOPIC = \
+    "devices/6lowpan/02124b000c468202/opt3001"
+TOPIC_TO_WRITE = \
+    "devices/6lowpan/02124b000c468202/pwm"
 
 
 def check_input(inp):
@@ -41,7 +43,8 @@ def check_input(inp):
     try:
         msg = json.loads(inp)
     except json.decoder.JSONDecodeError as error:
-        print("Wrong format on %d pos--->%s%s" % (error.pos, inp[error.pos], inp[error.pos + 1:error.pos + 10]))
+        print("Wrong format on %d pos--->%s%s" % (
+              error.pos, inp[error.pos], inp[error.pos + 1:error.pos + 10]))
         return False
     if type(msg) != dict:
         print("Wrong format, {..} expected")
@@ -81,7 +84,7 @@ def check_input(inp):
         if data_type != str:
             print("Wrong %s type" % item, data, " value", status[item])
             return False
-    if status['devEUI'] != "807B85902000025D":
+    if status['devEUI'] != "02124b000c468202":
         print("bad id %s" % (status['devEUI']))
         return False
     if data['luminocity'] < 0:
@@ -125,22 +128,23 @@ def on_connect(client, userdata, flags, rc):
     print("Connected with result code " + str(rc))
 
     # Subscribing in on_connect() means that if we lose the connection and
-
     # reconnect then subscriptions will be renewed.
-
     client.subscribe(TOPIC)
 
-message_to_send = "set freq 600 dev 1 on ch 1 duty "#lum 0 -> duty 100, lum
+message_to_send = "set freq 800 dev 01 on ch 01 duty "#lum 0 -> duty 100
 
 def on_message(client, userdata, msg):
-    lum = check_input(str(msg.payload)[2:-1])
-    if lum != False:
-        if lum > 1000:
-            duty = 0
-        else:
-            duty = lum / 10
-        client.publish(TOPIC_TO_WRITE, message_to_send + str(int(duty)), qos=0)
-        print("Get lum %d, set duty %d" %(lum, int(duty)))
+    print("get msg %s" %str(msg.payload)[2:-1])
+    if (str(msg.payload)[2:-1] != 'send' and str(msg.payload)[2:-1] != 'get'):
+        lum = check_input(str(msg.payload)[2:-1])
+        if lum != False:
+            if lum > 2000:
+                duty = 1
+            else:
+                duty = 100 - lum / 20
+            client.publish(TOPIC_TO_WRITE, message_to_send + str(int(duty)),
+                           qos=0)
+            print("Get lum %d, set duty %d" %(lum, int(duty)))
 
 client = mqtt.Client()
 
